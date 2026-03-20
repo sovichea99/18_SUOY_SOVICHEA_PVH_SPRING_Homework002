@@ -11,15 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentRequest {
-    @JsonProperty("studentName")
     private String studentName;
-
-    @JsonProperty("email")
     private String email;
-
-    @JsonProperty("phoneNumber")
     private String phoneNumber;
-
-    @JsonProperty("courseIds")
     private List<Long> courseIds;
 }

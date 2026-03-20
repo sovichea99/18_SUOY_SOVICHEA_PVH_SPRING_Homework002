@@ -17,9 +17,9 @@ public interface StudentRepository {
     })
     @Select("""
     
-            SELECT * FROM students order by student_id limit #{size} offset #{offset}
+            SELECT * FROM students order by student_id offset #{offset} limit #{size}
     """)
-    List<Student> getAllStudent(int offset, Integer size);
+    List<Student> getAllStudent(Integer offset, Integer size);
 
 
     @ResultMap("studentMapper")

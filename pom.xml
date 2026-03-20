@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>18_SUOY_SOVICHEA_PVH_Spring_Homework002</artifactId>
+    <artifactId>18_SUOY_SOVICHEA_PVH_SPRING_Homework002</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>18_SUOY_SOVICHEA_PVH_Spring_Homework002</name>
     <description>18_SUOY_SOVICHEA_PVH_Spring_Homework002</description>
