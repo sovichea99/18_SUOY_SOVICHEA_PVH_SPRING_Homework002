@@ -22,7 +22,7 @@ public class InstructorController {
     public InstructorController(InstructorService instructorService) {
         this.instructorService = instructorService;
     }
-
+    @Operation(summary = "Get all instructors")
     @GetMapping()
     public ResponseEntity<ApiResponse<List<Instructor>>> getAllInstructor(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size){
         List<Instructor> instructor = instructorService.getAllInstructor(page, size);
@@ -35,17 +35,16 @@ public class InstructorController {
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
+    @Operation(summary = "Get instructor by ID")
     @GetMapping("/{instructor-id}")
     public ResponseEntity<ApiResponse<Instructor>> getInstructorById(@PathVariable("instructor-id") long instructorId){
         Instructor instructor = instructorService.getInstructorById(instructorId);
 
         if(instructor == null){
             ApiResponse<Instructor> response = ApiResponse.<Instructor>builder()
-                    .success(true)
+                    .success(false)
                     .status(HttpStatus.NOT_FOUND.value())
                     .message("No instructors found with the given ID")
-                    .payload(null)
                     .timestamp(Instant.now())
                     .build();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -59,7 +58,7 @@ public class InstructorController {
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
+    @Operation(summary = "Create a new instructor")
     @PostMapping()
     public ResponseEntity<ApiResponse<Instructor>> addInstructor(@RequestBody InstructorRequest request){
         Instructor instructor = instructorService.addInstructor(request);
@@ -72,10 +71,19 @@ public class InstructorController {
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
+    @Operation(summary = "Update instructor by ID")
     @PutMapping("/{instructor-id}")
     public ResponseEntity<ApiResponse<Instructor>> updateInstructor(@PathVariable("instructor-id") long instructorId, @RequestBody InstructorRequest request){
         Instructor instructor = instructorService.updateInstructor(instructorId, request);
+        if(instructor == null){
+            ApiResponse<Instructor> response = ApiResponse.<Instructor>builder()
+                    .success(false)
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .message("No instructors found with the given ID")
+                    .timestamp(Instant.now())
+                    .build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
         ApiResponse<Instructor> response = ApiResponse.<Instructor>builder()
                 .success(true)
                 .status(HttpStatus.OK.value())
@@ -89,6 +97,15 @@ public class InstructorController {
     @DeleteMapping("/{instructor-id}")
     public ResponseEntity<ApiResponse<Instructor>> deleteInstructorById(@PathVariable("instructor-id") long instructorId){
         Instructor instructor = instructorService.deleteInstructorById(instructorId);
+        if(instructor == null){
+            ApiResponse<Instructor> response = ApiResponse.<Instructor>builder()
+                    .success(false)
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .message("No instructors found with the given ID")
+                    .timestamp(Instant.now())
+                    .build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
         ApiResponse<Instructor> response = ApiResponse.<Instructor>builder()
                 .success(true)
                 .status(HttpStatus.OK.value())

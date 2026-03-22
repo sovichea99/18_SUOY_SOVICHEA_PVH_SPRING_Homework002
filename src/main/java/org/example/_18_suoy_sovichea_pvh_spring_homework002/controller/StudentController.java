@@ -61,6 +61,7 @@ public class StudentController {
     @PostMapping("")
     public ResponseEntity<ApiResponse<Student>> createNewStudent(@RequestBody StudentRequest request){
         Student student = studentService.createNewStudent(request);
+
         ApiResponse<Student> response = ApiResponse.<Student>builder()
                 .success(true)
                 .status(HttpStatus.OK.value())
@@ -74,6 +75,15 @@ public class StudentController {
     @PutMapping("/{student-id}")
     public ResponseEntity<ApiResponse<Student>> updateStudent(@PathVariable("student-id") Long studentId, @RequestBody StudentRequest request){
         Student student = studentService.updatetudent(studentId, request);
+        if(student == null){
+            ApiResponse<Student> response = ApiResponse.<Student>builder()
+                    .success(false)
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .message("No students found with the given ID")
+                    .timestamp(Instant.now())
+                    .build();
+            return ResponseEntity.ok().body(response);
+        }
         ApiResponse<Student> response = ApiResponse.<Student>builder()
                 .success(true)
                 .status(HttpStatus.OK.value())

@@ -39,6 +39,16 @@ public class CourseController {
     @GetMapping("/{course-id}")
     public ResponseEntity<ApiResponse<Courses>> getCoursesById(@PathVariable("course-id") long courseId){
         Courses courses = courseService.getCoursesById(courseId);
+
+        if(courses == null){
+            ApiResponse<Courses> response = ApiResponse.<Courses>builder()
+                    .success(false)
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .message("No courses found with the given ID")
+                    .timestamp(Instant.now())
+                    .build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
         ApiResponse<Courses> response = ApiResponse.<Courses>builder()
                 .success(true)
                 .status(HttpStatus.OK.value())
@@ -65,6 +75,15 @@ public class CourseController {
     @PutMapping("/{course-id}")
     public ResponseEntity<ApiResponse<Courses>> updateCourse(@PathVariable("course-id") Long courseId  , @RequestBody CourseRequest request){
         Courses courses = courseService.updateCourse(courseId, request);
+        if(courses == null){
+            ApiResponse<Courses> response = ApiResponse.<Courses>builder()
+                    .success(false)
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .message("No courses found with the given ID")
+                    .timestamp(Instant.now())
+                    .build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
         ApiResponse<Courses> response = ApiResponse.<Courses>builder()
                 .success(true)
                 .status(HttpStatus.OK.value())
